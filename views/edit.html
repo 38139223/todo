@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        {{.title}}
+    </title>
+    <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/public/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/public/css/reset.css" type="text/css" />
+    <link rel="stylesheet" href="/public/css/style.css" type="text/css" />
+</head>
+
+<body>
+    <div class="page">
+        <div class="header box">
+            <a href="/">任务跟踪</a>
+        </div>
+
+        <div class="main box">
+            <div class="box">
+                <div class="box post">
+                    <h2>修改</h2>
+                    <form action="/edit" method="post" id="post_new" onsubmit="return emptyCheck()">
+                        <p>
+                            <input type="hidden" name="id" value="{{.Id}}" >
+                            <input type="text" name="title" class="long_txt" value="{{.Title}}" />
+                        </p>
+                        <p>
+                            <input type="submit" class="submit" value="完成" />
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="foot">
+            Copyright <span>©</span> 任务跟踪 作者 ting
+            <br> powered by golang
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+function emptyCheck() {
+    var title = document.all['title'].value;
+    if (title.length == 0) {
+        alert("内容不能为空，请输入.")
+        return false;
+    }
+    return true;
+}
+</script>
+
+</html>

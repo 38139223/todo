@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Todo
+    </title>
+    <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/public/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/public/css/reset.css" type="text/css" />
+    <link rel="stylesheet" href="/public/css/style.css" type="text/css" />
+</head>
+
+<body>
+    <div class="page">
+        <div class="header box">
+            <a href="/">任务跟踪</a>
+        </div>
+
+        <div class="main box">
+            <div class="box">
+                <div class="box todos">
+                    <h2 class="box">待办事项</h2>
+                    <ul>
+                        {{with .TodoList}} 
+                            {{range .}}
+                                <li>
+                                    {{if .Finish}}
+                                        <del>{{ .Title }}</del> &nbsp;
+                                        <a href="/finish?id={{.Id}}&finish={{.Finish}}">恢复</a>
+                                    {{else}}
+                                        {{ .Title }}&nbsp;
+                                        <a href="/finish?id={{.Id}}&finish={{.Finish}}">完成</a>
+                                    {{end}}
+                                    <a href="/edit?id={{.Id}}">修改</a>
+                                    <a href="/delete?id={{.Id}}" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a> 
+                                </li>
+                            {{end}} 
+                        {{end}}
+                    </ul>
+                </div>
+
+                <div class="box post">
+                    <h2>新增</h2>
+                    <form action="/new" method="post" id="post_new" onsubmit="return emptyCheck()">
+                        <p>
+                            <input type="text" name="title" class="long_txt" />
+                        </p>
+                        <p>
+                            <input type="submit" class="submit" value="添加" />
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="foot">
+            Copyright <span>©</span> Todo
+            <br> powered by golang
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+function emptyCheck() {
+    var title = document.all['title'].value;
+    if (title.length == 0) {
+        alert("内容不能为空，请输入.")
+        return false;
+    }
+    return true;
+}
+</script>
+
+</html>
