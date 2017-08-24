@@ -15,6 +15,7 @@ func main() {
 	http.HandleFunc("/edit", controllers.EditTodo)
 	http.HandleFunc("/finish", controllers.FinishTodo)
 	http.HandleFunc("/delete", controllers.DeleteTodo)
+	http.HandleFunc("/oss", controllers.HelloOss)
 	http.HandleFunc("/", controllers.Index)
 
 	err := http.ListenAndServe(":3000", nil)

@@ -33,7 +33,8 @@
                                         <a href="/finish?id={{.Id}}&finish={{.Finish}}">完成</a>
                                     {{end}}
                                     <a href="/edit?id={{.Id}}">修改</a>
-                                    <a href="/delete?id={{.Id}}" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a> 
+                                    <a href="/delete?id={{.Id}}" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
+                                    <img src="http://product.baobeigezi.com/{{.Img_url}}"  alt="{{.Title}}" />
                                 </li>
                             {{end}} 
                         {{end}}
@@ -47,29 +48,23 @@
                             <input type="text" name="title" class="long_txt" />
                         </p>
                         <p>
+                            <input id="img_url" type="file" accept="image/*" name="img_url"/>
+                        </p>
+                        <p>
                             <input type="submit" class="submit" value="添加" />
                         </p>
                     </form>
                 </div>
             </div>
         </div>
-
+        <div id="preview_box"></div>
         <div class="foot">
             Copyright <span>©</span> Todo
             <br> powered by golang
         </div>
     </div>
 </body>
-
-<script type="text/javascript">
-function emptyCheck() {
-    var title = document.all['title'].value;
-    if (title.length == 0) {
-        alert("内容不能为空，请输入.")
-        return false;
-    }
-    return true;
-}
-</script>
-
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/public/js/upzip/lrz.bundle.js"></script>
+<script src="/public/js/store.js"></script>
 </html>

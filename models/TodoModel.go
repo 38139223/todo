@@ -10,6 +10,7 @@ type Todo struct {
 	Id     int64
 	Title  string
 	Finish bool
+	Img_url string
 }
 
 
@@ -18,25 +19,15 @@ func initConnPool() (*sql.DB,error) {
 	Db.Init()
 	return Db.pool,nil
 }
-func InsertTodo(title string) (int64, error) {
-	// 数据库path是相对路径（相对于main.go）
-/*	db, err := sql.Open("mysql", "office:baidong@/todo")
-	// 函数代码执行完后关闭数据库，这是个好习惯，我爱defer
-	defer db.Close()
-	if err != nil {
-		return -1, err
-	}*/
-	//
-/*	Db := &MySQLClient{Host:"localhost",User:"office",Pwd:"baidong",DB:"todo",Port:3306,MaxOpen:300,MaxIdle:200}
-	Db.Init()*/
+func InsertTodo(title ,img_url string) (int64, error) {
 	db,err :=initConnPool()
-	stmt, err := db.Prepare("INSERT INTO todo(title, finish) VALUES(?, ?)")
+	stmt, err := db.Prepare("INSERT INTO todo(title,img_url,finish) VALUES(?,?,?)")
 	defer stmt.Close()
 	if err != nil {
 		return -1, err
 	}
 
-	res, err := stmt.Exec(title, false)
+	res, err := stmt.Exec(title,img_url,false)
 	if err != nil {
 		return -1, err
 	}
@@ -57,11 +48,12 @@ func QueryAll() ([]Todo, error) {
 		var id int64
 		var title string
 		var finish bool
-		err = rows.Scan(&id, &title, &finish)
+		var img_url  string
+		err = rows.Scan(&id, &title, &finish,&img_url)
 		if err != nil {
 			return nil, err
 		}
-		todo := Todo{id, title, finish}
+		todo := Todo{id, title, finish,img_url}
 		todos = append(todos, todo)
 	}
 	return todos, nil
@@ -103,27 +95,27 @@ func DeleteTodo(todoId int64) (int64, error) {
 	return affect, nil
 }
 
-func GetTodoTitle(todoId int64) (string, error) {
+func GetTodoTitle(todoId int64) (string,string, error) {
 	db,_ := initConnPool()
 	// 只查询一行数据
-	row := db.QueryRow("SELECT title FROM todo WHERE id=?", todoId)
 	var title string
-	e := row.Scan(&title)
-	if e != nil {
-		return "", e
+	var img_url string
+	err := db.QueryRow("SELECT title,img_url FROM todo WHERE id=?", todoId).Scan(&title,&img_url)
+	if err != nil {
+		return "","", err
 	}
-	return title, nil
+	return title,img_url, nil
 }
 
-func EditTodo(id int64, title string) (int64, error) {
+func EditTodo(title string,img_url string,id int64) (int64, error) {
 	db,err := initConnPool()
-	stmt, err := db.Prepare("UPDATE todo SET title=? WHERE id=?")
+	stmt, err := db.Prepare("UPDATE todo SET title=?,img_url=? WHERE id=?")
 	defer stmt.Close()
 	if err != nil {
 		return 0, nil
 	}
 
-	res, err := stmt.Exec(title, id)
+	res, err := stmt.Exec(title,img_url,id)
 	if err != nil {
 		return 0, nil
 	}

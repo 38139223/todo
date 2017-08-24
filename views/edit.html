@@ -27,6 +27,9 @@
                             <input type="text" name="title" class="long_txt" value="{{.Title}}" />
                         </p>
                         <p>
+                            <input type="file" name="img_url" id="img_url" accept="image/*" value="{{.img_url}}"/>
+                        </p>
+                        <p>
                             <input type="submit" class="submit" value="完成" />
                         </p>
                     </form>
@@ -35,7 +38,7 @@
         </div>
 
         <div class="foot">
-            Copyright <span>©</span> 任务跟踪 作者 ting
+            Copyright <span>©</span> todo
             <br> powered by golang
         </div>
     </div>
@@ -50,5 +53,8 @@ function emptyCheck() {
     return true;
 }
 </script>
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/public/js/upzip/lrz.bundle.js"></script>
+<script src="/public/js/store.js"></script>
 
 </html>

@@ -3,7 +3,6 @@ package models
 import (
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"fmt"
-	"os"
 )
 
 type AliOss struct {
@@ -18,24 +17,24 @@ func NewAliOss(endPoint,accessId,accessKey string)(*AliOss){
 	aliOss.accessKey = accessKey
 	return aliOss
 }
-func (this *AliOss)PutFile2Oss(objectKey,path string)(bool){
+func (this *AliOss)PutFileOss(object,path string)(bool){
 	client,err := oss.New(this.endPoint,this.accessID,this.accessKey)
 	if err != nil {
 		fmt.Println(err)
 		return false
 	}
-	bucket,err := client.Bucket("sale-bg")
+	bucket,err := client.Bucket("web-index")
 	if err != nil {
 		fmt.Println(err)
 		return false
 	}
-	fd,err := os.Open(path)
+/*	fd,err := os.Open(path)
 	if err != nil {
 		fmt.Println(err)
 		return false
-	}
-	defer fd.Close()
-	err = bucket.PutObject(objectKey,fd)
+	}*//*
+	defer fd.Close()*/
+	err = bucket.PutObjectFromFile(object,path)
 	if err != nil {
 		fmt.Println(err)
 		return false

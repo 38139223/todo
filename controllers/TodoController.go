@@ -13,6 +13,12 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	} else {
 		if r.URL.Path == "/" {
 			todos, err := models.QueryAll()
+/*			see := http.Cookie{
+				Name:"todo",
+				Value:"frist",
+				HttpOnly:true,
+			}
+			http.SetCookie(w,&see)*/
 			if err != nil {
 				showError(w, "异常", "查询异常")
 				return
@@ -37,8 +43,9 @@ func NewTodo(w http.ResponseWriter, r *http.Request) {
 		showError(w, "异常", "非法请求")
 	} else {
 		title := r.FormValue("title")
-		id, err := models.InsertTodo(title)
-
+		local_path := r.FormValue("img_url")
+		img_url := upload_dir+local_path
+		id, err := models.InsertTodo(title,img_url)
 		if err != nil || id <= 0 {
 			showError(w, "异常", "插入数据异常")
 			return
@@ -96,7 +103,7 @@ func EditTodo(w http.ResponseWriter, r *http.Request) {
 		// 本可以将title内容提交至此，但url将会异常难看，还是根据id查询吧
 		id := r.FormValue("id")
 		intId, _ := strconv.ParseInt(id, 10, 64)
-		title, err := models.GetTodoTitle(intId)
+		title,img_url,err := models.GetTodoTitle(intId)
 		if err != nil {
 			showError(w, "异常", "查询Todo内容失败")
 			return
@@ -105,13 +112,16 @@ func EditTodo(w http.ResponseWriter, r *http.Request) {
 		data := make(map[string]string)
 		data["Id"] = id
 		data["Title"] = title
+		data["Img_url"] = img_url
 		t.Execute(w, data)
 
 	} else if r.Method == "POST" {
 		// edit后的数据post提交至此处
 		id, _ := strconv.ParseInt(r.FormValue("id"), 10, 64)
 		title := r.FormValue("title")
-		res, err := models.EditTodo(id, title)
+		local_path := r.FormValue("img_url")
+		img_url := upload_dir+local_path
+		res, err := models.EditTodo(title,img_url,id)
 		if err != nil || res <= 0 {
 			showError(w, "异常", "修改失败")
 			return
