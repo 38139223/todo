@@ -13,8 +13,8 @@ import (
 )
 var ossBucket string = "web-index"
 var ossServer string = "oss-cn-beijing.aliyuncs.com"
-var accessKeyId string = "LTAI8VGxPUO8bKCv"
-var accessKeySecret string = "V3Lq1oDfPnuOPHE7uAkvXibJdUt7JA"
+var accessKeyId string = "xxxxxx"
+var accessKeySecret string = "xxxxxxxx"
 var host string = "http://"+ossBucket+"."+ossServer
 var expire_time int64 = 60
 var upload_dir string = "todoPic/"
